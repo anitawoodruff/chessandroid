@@ -1,11 +1,11 @@
 package com.twokwy.chessandroid;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ChessBoardFactory {
     private final int darkSquareColor;
@@ -30,12 +30,12 @@ public class ChessBoardFactory {
         int xOffset = (w - (squareSize * 8)) / 2;
         int yOffset = (h - (squareSize * 8)) / 2;
 
-        List<ChessSquare> squares = createListOfEmptySquaresForBoard(squareSize, xOffset, yOffset);
+        List<ChessSquare> squares = createListOfSquaresForBoard(squareSize, xOffset, yOffset);
 
         return new ChessBoard(squares);
     }
 
-    private List<ChessSquare> createListOfEmptySquaresForBoard(int squareSize, int xOffset, int yOffset) {
+    private List<ChessSquare> createListOfSquaresForBoard(int squareSize, int xOffset, int yOffset) {
         List<ChessSquare> squares = new ArrayList<>(64);
         for (int i = 0; i < 64; i++) {
             int x = i % 8;
@@ -48,8 +48,40 @@ public class ChessBoardFactory {
 
             Rect bounds = new Rect(leftBound, topBound, rightBound, bottomBound);
             int color = (x + y) % 2 == 0 ? lightSquareColor : darkSquareColor;
-            squares.add(i, ChessSquare.create(color, bounds));
+            ChessPiece chessPiece = getStartingPieceAt(x, y);
+            squares.add(i, ChessSquare.create(color, bounds, Optional.ofNullable(chessPiece)));
         }
         return squares;
+    }
+
+    private static ChessPiece getStartingPieceAt(int x, int y) {
+        ChessPieceType pieceType = getChessPieceTypeAt(x, y);
+        if (pieceType == null) {
+            return null;
+        }
+        return new ChessPiece(pieceType, y < 2 ? PieceColor.WHITE : PieceColor.BLACK);
+    }
+
+    private static ChessPieceType getChessPieceTypeAt(int x, int y) {
+        if (y == 1 || y == 6) {
+            return ChessPieceType.PAWN;
+        } else if ((y == 0 || y == 7)) {
+            switch (x) {
+                case 0:
+                case 7:
+                    return ChessPieceType.ROOK;
+                case 1:
+                case 6:
+                    return ChessPieceType.KNIGHT;
+                case 2:
+                case 5:
+                    return ChessPieceType.BISHOP;
+                case 3:
+                    return ChessPieceType.KING;
+                case 4:
+                    return ChessPieceType.QUEEN;
+            }
+        }
+        return null;
     }
 }
