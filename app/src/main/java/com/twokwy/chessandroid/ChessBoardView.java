@@ -9,10 +9,12 @@ import androidx.annotation.Nullable;
 
 public class ChessBoardView extends View {
 
+    private final ChessBoardFactory chessBoardFactory;
     private ChessBoard chessBoard;
 
     public ChessBoardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        chessBoardFactory = new ChessBoardFactory(context);
     }
 
     @Override
@@ -26,6 +28,6 @@ public class ChessBoardView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        chessBoard = ChessBoardFactory.createToFillWidthAndHeight(w, h);
+        chessBoard = chessBoardFactory.createToFillWidthAndHeight(w, h);
     }
 }
