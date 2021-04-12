@@ -11,6 +11,9 @@ public class ChessBoardFactory {
     private final int darkSquareColor;
     private final int lightSquareColor;
 
+    private static final char[] FILES = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
+    private static final int[] RANKS = {1, 2, 3, 4, 5, 6, 7, 8 };
+
     public ChessBoardFactory(Context context) {
         darkSquareColor = context.getResources().getColor(R.color.dark_square);
         lightSquareColor = context.getResources().getColor(R.color.light_square);
@@ -40,6 +43,9 @@ public class ChessBoardFactory {
         for (int i = 0; i < 64; i++) {
             int x = i % 8;
             int y = i / 8;
+            char file = FILES[x];
+            int rank = RANKS[7 - y];
+            String location = "" + file + rank;
 
             int leftBound = xOffset + x * squareSize;
             int rightBound = leftBound + squareSize;
@@ -47,9 +53,9 @@ public class ChessBoardFactory {
             int bottomBound = topBound + squareSize;
 
             Rect bounds = new Rect(leftBound, topBound, rightBound, bottomBound);
-            int color = (x + y) % 2 == 0 ? lightSquareColor : darkSquareColor;
+            int color = (x + y) % 2 == 0 ? darkSquareColor : lightSquareColor;
             ChessPiece chessPiece = getStartingPieceAt(x, y);
-            squares.add(i, ChessSquare.create(color, bounds, Optional.ofNullable(chessPiece)));
+            squares.add(i, ChessSquare.create(location, color, bounds, Optional.ofNullable(chessPiece)));
         }
         return squares;
     }
@@ -59,7 +65,7 @@ public class ChessBoardFactory {
         if (pieceType == null) {
             return null;
         }
-        return new ChessPiece(pieceType, y < 2 ? PieceColor.WHITE : PieceColor.BLACK);
+        return new ChessPiece(pieceType, y < 2 ? PieceColor.BLACK : PieceColor.WHITE);
     }
 
     private static ChessPieceType getChessPieceTypeAt(int x, int y) {

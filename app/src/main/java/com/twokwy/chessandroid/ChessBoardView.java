@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.EnumMap;
@@ -22,6 +24,11 @@ public class ChessBoardView extends View {
     private final EnumMap<ChessPieceType, Drawable> blackPieceDrawables;
 
     private ChessBoard chessBoard;
+    private float downX;
+    private float downY;
+    private float upX;
+    private float upY;
+
     public ChessBoardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         chessBoardFactory = new ChessBoardFactory(context);
@@ -57,10 +64,51 @@ public class ChessBoardView extends View {
             squareDrawable.draw(canvas);
             Optional<ChessPiece> piece = square.getPiece();
             piece.ifPresent(chessPiece -> {
-                Rect bounds = squareDrawable.getBounds();
+                Rect bounds = squareDrawable.copyBounds();
                 bounds.inset(INSET_CHESS_PIECE_DISTANCE, INSET_CHESS_PIECE_DISTANCE);
                 drawPiece(canvas, bounds, getDrawable(chessPiece));
             });
+        }
+    }
+
+    @Override
+    public boolean performClick() {
+        Optional<ChessSquare> downSquare = getSquareContainingPoint(downX, downY, chessBoard);
+        Optional<ChessSquare> upSquare = getSquareContainingPoint(upX, upY, chessBoard);
+        if (downSquare.isPresent() && downSquare.get().getPiece().isPresent() && upSquare.isPresent()) {
+            // move the piece
+            Log.d("ANITA", String.format("placing piece: %s at square %s", downSquare.get().getPiece().get().getPieceType(), upSquare.get()));
+            chessBoard.movePiece(downSquare.get(), upSquare.get());
+            invalidate();
+            return true;
+        }
+        return super.performClick();
+    }
+
+    public static Optional<ChessSquare> getSquareContainingPoint(float x, float y, ChessBoard chessBoard) {
+        for (ChessSquare square : chessBoard.getSquares()) {
+            if (square.containsPoint(x, y)) {
+
+                return Optional.of(square);
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                downX = event.getX();
+                downY = event.getY();
+                return true;
+            case MotionEvent.ACTION_UP:
+                upX = event.getX();
+                upY = event.getY();
+                return performClick();
+            default:
+                return super.onTouchEvent(event);
         }
     }
 
