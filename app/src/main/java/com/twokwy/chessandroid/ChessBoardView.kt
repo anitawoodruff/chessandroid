@@ -60,8 +60,8 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
     }
 
     fun endDrag(): Boolean {
-        val downSquare = getSquareContainingPoint(downX, downY, chessBoard)
-        val upSquare = getSquareContainingPoint(upX, upY, chessBoard)
+        val downSquare = chessBoard.getSquareContainingPoint(downX, downY)
+        val upSquare = chessBoard.getSquareContainingPoint(upX, upY)
         Log.d("ChessBoardView", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
         if (downSquare == upSquare) {
             return true
@@ -107,16 +107,6 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
                 chessPieceType: ChessPieceType,
                 drawable: Int) {
             map[chessPieceType] = ContextCompat.getDrawable(context, drawable)
-        }
-
-        fun getSquareContainingPoint(
-                x: Float, y: Float, chessBoard: ChessBoard): Optional<ChessSquare> {
-            for (square in chessBoard.squares) {
-                if (square.containsPoint(x, y)) {
-                    return Optional.of(square)
-                }
-            }
-            return Optional.empty()
         }
 
         private fun drawPiece(canvas: Canvas, bounds: Rect, pieceDrawable: Drawable?) {
