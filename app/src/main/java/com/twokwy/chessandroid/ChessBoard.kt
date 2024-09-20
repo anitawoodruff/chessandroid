@@ -26,7 +26,7 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
         pieceDrawable.draw(canvas)
     }
 
-    fun handleDrag(downX: Float, downY: Float, upX: Float, upY: Float) : Boolean {
+    fun handleDrag(downX: Float, downY: Float, upX: Float, upY: Float): Boolean {
         val downSquare = getSquareContainingPoint(downX, downY)
         val upSquare = getSquareContainingPoint(upX, upY)
         Log.d("ChessBoard", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
@@ -34,12 +34,18 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
             // Dragging onto or off of the board is not handled
             return false
         }
+        if (!downSquare.get().piece.isPresent) {
+            // Dragging from an empty square is not handled
+            return false
+        }
         if (downSquare == upSquare) {
             // Tapping on a square is a no-op
             return true
         }
-        if (!downSquare.get().piece.isPresent) {
-            // Dragging from an empty square is a no-op
+        val pieceToBeMoved = downSquare.get().piece
+        val pieceToBeTaken = upSquare.get().piece
+        if (pieceToBeTaken.isPresent && pieceToBeMoved.get().color == pieceToBeTaken.get().color) {
+            // Attempting to take a piece of the same color is a no-op
             return true
         }
         movePiece(downSquare.get(), upSquare.get())
