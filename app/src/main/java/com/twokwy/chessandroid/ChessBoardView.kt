@@ -16,7 +16,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
     private val chessBoardFactory: ChessBoardFactory
     private val whitePieceDrawables: EnumMap<ChessPieceType, Drawable?>
     private val blackPieceDrawables: EnumMap<ChessPieceType, Drawable?>
-    private var chessBoard: ChessBoard? = null
+    private lateinit var chessBoard: ChessBoard
     private var downX = 0f
     private var downY = 0f
     private var upX = 0f
@@ -47,7 +47,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        for (square in chessBoard!!.squares) {
+        for (square in chessBoard.squares) {
             val squareDrawable = square.drawable
             squareDrawable.draw(canvas)
             val piece = square.piece
@@ -67,7 +67,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
             return true
         }
         if (downSquare.isPresent && downSquare.get().piece.isPresent && upSquare.isPresent) {
-            chessBoard!!.movePiece(downSquare.get(), upSquare.get())
+            chessBoard.movePiece(downSquare.get(), upSquare.get())
             invalidate()
             return true
         }
@@ -110,8 +110,8 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
         }
 
         fun getSquareContainingPoint(
-                x: Float, y: Float, chessBoard: ChessBoard?): Optional<ChessSquare> {
-            for (square in chessBoard!!.squares) {
+                x: Float, y: Float, chessBoard: ChessBoard): Optional<ChessSquare> {
+            for (square in chessBoard.squares) {
                 if (square.containsPoint(x, y)) {
                     return Optional.of(square)
                 }
