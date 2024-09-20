@@ -8,14 +8,13 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContextCompat
-import java.util.EnumMap
-import java.util.Optional
+import com.twokwy.chessandroid.ChessPieceType.*
+import com.twokwy.chessandroid.PieceColor.BLACK
+import com.twokwy.chessandroid.PieceColor.WHITE
 
 class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val chessBoardFactory: ChessBoardFactory
-    private val whitePieceDrawables: ChessPieceIcons
-    private val blackPieceDrawables: ChessPieceIcons
+    private val chessPieceIcons: ChessPieceIcons
     private lateinit var chessBoard: ChessBoard
     private var downX = 0f
     private var downY = 0f
@@ -24,20 +23,19 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     init {
         chessBoardFactory = ChessBoardFactory(context)
-        whitePieceDrawables = ChessPieceIcons()
-        whitePieceDrawables.addDrawable(context, ChessPieceType.KING, R.drawable.ic_king_white)
-        whitePieceDrawables.addDrawable(context, ChessPieceType.QUEEN, R.drawable.ic_queen_white)
-        whitePieceDrawables.addDrawable(context, ChessPieceType.BISHOP, R.drawable.ic_bishop_white)
-        whitePieceDrawables.addDrawable(context, ChessPieceType.KNIGHT, R.drawable.ic_knight_white)
-        whitePieceDrawables.addDrawable(context, ChessPieceType.ROOK, R.drawable.ic_rook_white)
-        whitePieceDrawables.addDrawable(context, ChessPieceType.PAWN, R.drawable.ic_pawn_white)
-        blackPieceDrawables = ChessPieceIcons()
-        blackPieceDrawables.addDrawable(context, ChessPieceType.KING, R.drawable.ic_king_black)
-        blackPieceDrawables.addDrawable(context, ChessPieceType.QUEEN, R.drawable.ic_queen_black)
-        blackPieceDrawables.addDrawable(context, ChessPieceType.BISHOP, R.drawable.ic_bishop_black)
-        blackPieceDrawables.addDrawable(context, ChessPieceType.KNIGHT, R.drawable.ic_knight_black)
-        blackPieceDrawables.addDrawable(context, ChessPieceType.ROOK, R.drawable.ic_rook_black)
-        blackPieceDrawables.addDrawable(context, ChessPieceType.PAWN, R.drawable.ic_pawn_black)
+        chessPieceIcons = ChessPieceIcons()
+        chessPieceIcons.addDrawable(context, ChessPiece(KING, WHITE), R.drawable.ic_king_white)
+        chessPieceIcons.addDrawable(context, ChessPiece(QUEEN, WHITE), R.drawable.ic_queen_white)
+        chessPieceIcons.addDrawable(context, ChessPiece(BISHOP, WHITE), R.drawable.ic_bishop_white)
+        chessPieceIcons.addDrawable(context, ChessPiece(KNIGHT, WHITE), R.drawable.ic_knight_white)
+        chessPieceIcons.addDrawable(context, ChessPiece(ROOK, WHITE), R.drawable.ic_rook_white);
+        chessPieceIcons.addDrawable(context, ChessPiece(PAWN, WHITE), R.drawable.ic_pawn_white)
+        chessPieceIcons.addDrawable(context, ChessPiece(KING, BLACK), R.drawable.ic_king_black)
+        chessPieceIcons.addDrawable(context, ChessPiece(QUEEN, BLACK), R.drawable.ic_queen_black)
+        chessPieceIcons.addDrawable(context, ChessPiece(BISHOP, BLACK), R.drawable.ic_bishop_black)
+        chessPieceIcons.addDrawable(context, ChessPiece(KNIGHT, BLACK), R.drawable.ic_knight_black)
+        chessPieceIcons.addDrawable(context, ChessPiece(ROOK, BLACK), R.drawable.ic_rook_black)
+        chessPieceIcons.addDrawable(context, ChessPiece(PAWN, BLACK), R.drawable.ic_pawn_black)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -94,9 +92,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
     }
 
     private fun getDrawable(piece: ChessPiece): Drawable? {
-        return if (piece.isWhite) {
-            whitePieceDrawables.getDrawable(piece)
-        } else blackPieceDrawables.getDrawable(piece)
+        return chessPieceIcons.getDrawable(piece)
     }
 
     companion object {
