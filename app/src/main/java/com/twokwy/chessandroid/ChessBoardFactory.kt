@@ -4,14 +4,9 @@ import android.content.Context
 import android.graphics.Rect
 import java.util.Optional
 
-class ChessBoardFactory(context: Context) {
-    private val darkSquareColor: Int
-    private val lightSquareColor: Int
-
-    init {
-        darkSquareColor = context.resources.getColor(R.color.dark_square)
-        lightSquareColor = context.resources.getColor(R.color.light_square)
-    }
+class ChessBoardFactory(private val context: Context) {
+    private val darkSquareColor: Int = context.resources.getColor(R.color.dark_square)
+    private val lightSquareColor: Int = context.resources.getColor(R.color.light_square)
 
     /**
      * Creates a chess board with 8x8 squares per to fit into the given dimensions.
@@ -26,7 +21,7 @@ class ChessBoardFactory(context: Context) {
         val xOffset = (w - squareSize * 8) / 2
         val yOffset = (h - squareSize * 8) / 2
         val squares = createListOfSquaresForBoard(squareSize, xOffset, yOffset)
-        return ChessBoard(squares)
+        return ChessBoard(squares, ChessPieceIcons(context))
     }
 
     private fun createListOfSquaresForBoard(

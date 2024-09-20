@@ -8,14 +8,11 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import com.twokwy.chessandroid.ChessPieceType.*
-import com.twokwy.chessandroid.PieceColor.BLACK
-import com.twokwy.chessandroid.PieceColor.WHITE
 
 class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val chessBoardFactory: ChessBoardFactory
-    private val chessPieceIcons: ChessPieceIcons
     private lateinit var chessBoard: ChessBoard
+
     private var downX = 0f
     private var downY = 0f
     private var upX = 0f
@@ -23,7 +20,6 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     init {
         chessBoardFactory = ChessBoardFactory(context)
-        chessPieceIcons = ChessPieceIcons(context)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -33,61 +29,32 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        for (square in chessBoard.squares) {
-            val squareDrawable = square.drawable
-            squareDrawable.draw(canvas)
-            val piece = square.piece
-            piece.ifPresent { chessPiece: ChessPiece ->
-                val bounds = squareDrawable.copyBounds()
-                bounds.inset(INSET_CHESS_PIECE_DISTANCE, INSET_CHESS_PIECE_DISTANCE)
-                drawPiece(canvas, bounds, getDrawable(chessPiece))
-            }
-        }
+        chessBoard.drawToCanvas(canvas)
     }
 
-    fun endDrag(): Boolean {
-        val downSquare = chessBoard.getSquareContainingPoint(downX, downY)
-        val upSquare = chessBoard.getSquareContainingPoint(upX, upY)
-        Log.d("ChessBoardView", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
-        if (downSquare == upSquare) {
-            return true
-        }
-        if (downSquare.isPresent && downSquare.get().piece.isPresent && upSquare.isPresent) {
-            chessBoard.movePiece(downSquare.get(), upSquare.get())
+    override fun performClick(): Boolean {
+        if (chessBoard.handleDrag(downX, downY, upX, upY)) {
             invalidate()
             return true
+        } else {
+            return super.performClick()
         }
-        return false
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val action = event.action
-        return when (action) {
+        when (action) {
             MotionEvent.ACTION_DOWN -> {
                 downX = event.x
                 downY = event.y
-                true
+                return true
             }
-
             MotionEvent.ACTION_UP -> {
                 upX = event.x
                 upY = event.y
-                return endDrag()
+                return performClick()
             }
-
-            else -> super.onTouchEvent(event)
-        }
-    }
-
-    private fun getDrawable(piece: ChessPiece): Drawable? {
-        return chessPieceIcons.getDrawable(piece)
-    }
-
-    companion object {
-        const val INSET_CHESS_PIECE_DISTANCE = 22
-        private fun drawPiece(canvas: Canvas, bounds: Rect, pieceDrawable: Drawable?) {
-            pieceDrawable!!.bounds = bounds
-            pieceDrawable.draw(canvas)
+            else -> return super.onTouchEvent(event)
         }
     }
 }
