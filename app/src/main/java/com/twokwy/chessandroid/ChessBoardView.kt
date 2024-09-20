@@ -59,7 +59,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
         }
     }
 
-    override fun performClick(): Boolean {
+    fun endDrag(): Boolean {
         val downSquare = getSquareContainingPoint(downX, downY, chessBoard)
         val upSquare = getSquareContainingPoint(upX, upY, chessBoard)
         Log.d("ChessBoardView", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
@@ -71,7 +71,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
             invalidate()
             return true
         }
-        return super.performClick()
+        return false
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -86,7 +86,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
             MotionEvent.ACTION_UP -> {
                 upX = event.x
                 upY = event.y
-                performClick()
+                return endDrag()
             }
 
             else -> super.onTouchEvent(event)
