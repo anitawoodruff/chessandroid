@@ -23,19 +23,7 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     init {
         chessBoardFactory = ChessBoardFactory(context)
-        chessPieceIcons = ChessPieceIcons()
-        chessPieceIcons.addDrawable(context, ChessPiece(KING, WHITE), R.drawable.ic_king_white)
-        chessPieceIcons.addDrawable(context, ChessPiece(QUEEN, WHITE), R.drawable.ic_queen_white)
-        chessPieceIcons.addDrawable(context, ChessPiece(BISHOP, WHITE), R.drawable.ic_bishop_white)
-        chessPieceIcons.addDrawable(context, ChessPiece(KNIGHT, WHITE), R.drawable.ic_knight_white)
-        chessPieceIcons.addDrawable(context, ChessPiece(ROOK, WHITE), R.drawable.ic_rook_white);
-        chessPieceIcons.addDrawable(context, ChessPiece(PAWN, WHITE), R.drawable.ic_pawn_white)
-        chessPieceIcons.addDrawable(context, ChessPiece(KING, BLACK), R.drawable.ic_king_black)
-        chessPieceIcons.addDrawable(context, ChessPiece(QUEEN, BLACK), R.drawable.ic_queen_black)
-        chessPieceIcons.addDrawable(context, ChessPiece(BISHOP, BLACK), R.drawable.ic_bishop_black)
-        chessPieceIcons.addDrawable(context, ChessPiece(KNIGHT, BLACK), R.drawable.ic_knight_black)
-        chessPieceIcons.addDrawable(context, ChessPiece(ROOK, BLACK), R.drawable.ic_rook_black)
-        chessPieceIcons.addDrawable(context, ChessPiece(PAWN, BLACK), R.drawable.ic_pawn_black)
+        chessPieceIcons = ChessPieceIcons(context)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
