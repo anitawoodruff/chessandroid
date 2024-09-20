@@ -27,8 +27,11 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
     }
 
     fun handleDrag(downX: Float, downY: Float, upX: Float, upY: Float): Boolean {
-        val downSquare = getSquareContainingPoint(downX, downY)
-        val upSquare = getSquareContainingPoint(upX, upY)
+        // TODO: Refactor to new class 'ChessMove'? (init with 'from' & 'to' squares)
+        // Could have a method isValid(), if valid then movePiece() (could become ChessMove
+        // .execute())
+        val downSquare = toSquare(downX, downY)
+        val upSquare = toSquare(upX, upY)
         Log.d("ChessBoard", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
         if (!downSquare.isPresent || !upSquare.isPresent) {
             // Dragging onto or off of the board is not handled
@@ -52,8 +55,7 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
         return true
     }
 
-    private fun getSquareContainingPoint(
-            x: Float, y: Float): Optional<ChessSquare> {
+    private fun toSquare(x: Float, y: Float): Optional<ChessSquare> {
         for (square in squares) {
             if (square.containsPoint(x, y)) {
                 return Optional.of(square)
