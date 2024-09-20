@@ -89,12 +89,12 @@ public class ChessBoardView extends View {
     public boolean performClick() {
         Optional<ChessSquare> downSquare = getSquareContainingPoint(downX, downY, chessBoard);
         Optional<ChessSquare> upSquare = getSquareContainingPoint(upX, upY, chessBoard);
+
+        Log.d("ChessBoardView", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare));
+        if (downSquare.equals(upSquare)) {
+            return true;
+        }
         if (downSquare.isPresent() && downSquare.get().getPiece().isPresent() && upSquare.isPresent()) {
-            // move the piece
-            Log.d("ANITA",
-                  String.format("placing piece: %s at square %s",
-                                downSquare.get().getPiece().get().getPieceType(),
-                                upSquare.get()));
             chessBoard.movePiece(downSquare.get(), upSquare.get());
             invalidate();
             return true;
