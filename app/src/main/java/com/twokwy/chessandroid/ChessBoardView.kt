@@ -14,8 +14,8 @@ import java.util.Optional
 
 class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val chessBoardFactory: ChessBoardFactory
-    private val whitePieceDrawables: EnumMap<ChessPieceType, Drawable?>
-    private val blackPieceDrawables: EnumMap<ChessPieceType, Drawable?>
+    private val whitePieceDrawables: ChessPieceIcons
+    private val blackPieceDrawables: ChessPieceIcons
     private lateinit var chessBoard: ChessBoard
     private var downX = 0f
     private var downY = 0f
@@ -24,20 +24,20 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     init {
         chessBoardFactory = ChessBoardFactory(context)
-        whitePieceDrawables = EnumMap(ChessPieceType::class.java)
-        addDrawable(context, whitePieceDrawables, ChessPieceType.KING, R.drawable.ic_king_white)
-        addDrawable(context, whitePieceDrawables, ChessPieceType.QUEEN, R.drawable.ic_queen_white)
-        addDrawable(context, whitePieceDrawables, ChessPieceType.BISHOP, R.drawable.ic_bishop_white)
-        addDrawable(context, whitePieceDrawables, ChessPieceType.KNIGHT, R.drawable.ic_knight_white)
-        addDrawable(context, whitePieceDrawables, ChessPieceType.ROOK, R.drawable.ic_rook_white)
-        addDrawable(context, whitePieceDrawables, ChessPieceType.PAWN, R.drawable.ic_pawn_white)
-        blackPieceDrawables = EnumMap(ChessPieceType::class.java)
-        addDrawable(context, blackPieceDrawables, ChessPieceType.KING, R.drawable.ic_king_black)
-        addDrawable(context, blackPieceDrawables, ChessPieceType.QUEEN, R.drawable.ic_queen_black)
-        addDrawable(context, blackPieceDrawables, ChessPieceType.BISHOP, R.drawable.ic_bishop_black)
-        addDrawable(context, blackPieceDrawables, ChessPieceType.KNIGHT, R.drawable.ic_knight_black)
-        addDrawable(context, blackPieceDrawables, ChessPieceType.ROOK, R.drawable.ic_rook_black)
-        addDrawable(context, blackPieceDrawables, ChessPieceType.PAWN, R.drawable.ic_pawn_black)
+        whitePieceDrawables = ChessPieceIcons()
+        whitePieceDrawables.addDrawable(context, ChessPieceType.KING, R.drawable.ic_king_white)
+        whitePieceDrawables.addDrawable(context, ChessPieceType.QUEEN, R.drawable.ic_queen_white)
+        whitePieceDrawables.addDrawable(context, ChessPieceType.BISHOP, R.drawable.ic_bishop_white)
+        whitePieceDrawables.addDrawable(context, ChessPieceType.KNIGHT, R.drawable.ic_knight_white)
+        whitePieceDrawables.addDrawable(context, ChessPieceType.ROOK, R.drawable.ic_rook_white)
+        whitePieceDrawables.addDrawable(context, ChessPieceType.PAWN, R.drawable.ic_pawn_white)
+        blackPieceDrawables = ChessPieceIcons()
+        blackPieceDrawables.addDrawable(context, ChessPieceType.KING, R.drawable.ic_king_black)
+        blackPieceDrawables.addDrawable(context, ChessPieceType.QUEEN, R.drawable.ic_queen_black)
+        blackPieceDrawables.addDrawable(context, ChessPieceType.BISHOP, R.drawable.ic_bishop_black)
+        blackPieceDrawables.addDrawable(context, ChessPieceType.KNIGHT, R.drawable.ic_knight_black)
+        blackPieceDrawables.addDrawable(context, ChessPieceType.ROOK, R.drawable.ic_rook_black)
+        blackPieceDrawables.addDrawable(context, ChessPieceType.PAWN, R.drawable.ic_pawn_black)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -95,20 +95,12 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     private fun getDrawable(piece: ChessPiece): Drawable? {
         return if (piece.isWhite) {
-            whitePieceDrawables[piece.pieceType]
-        } else blackPieceDrawables[piece.pieceType]
+            whitePieceDrawables.getDrawable(piece.pieceType)
+        } else blackPieceDrawables.getDrawable(piece.pieceType)
     }
 
     companion object {
         const val INSET_CHESS_PIECE_DISTANCE = 22
-        private fun addDrawable(
-                context: Context,
-                map: EnumMap<ChessPieceType, Drawable?>,
-                chessPieceType: ChessPieceType,
-                drawable: Int) {
-            map[chessPieceType] = ContextCompat.getDrawable(context, drawable)
-        }
-
         private fun drawPiece(canvas: Canvas, bounds: Rect, pieceDrawable: Drawable?) {
             pieceDrawable!!.bounds = bounds
             pieceDrawable.draw(canvas)
