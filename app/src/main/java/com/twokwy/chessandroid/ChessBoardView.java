@@ -1,5 +1,12 @@
 package com.twokwy.chessandroid;
 
+import static com.twokwy.chessandroid.ChessPieceType.BISHOP;
+import static com.twokwy.chessandroid.ChessPieceType.KING;
+import static com.twokwy.chessandroid.ChessPieceType.KNIGHT;
+import static com.twokwy.chessandroid.ChessPieceType.PAWN;
+import static com.twokwy.chessandroid.ChessPieceType.QUEEN;
+import static com.twokwy.chessandroid.ChessPieceType.ROOK;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -34,20 +41,27 @@ public class ChessBoardView extends View {
         chessBoardFactory = new ChessBoardFactory(context);
 
         whitePieceDrawables = new EnumMap<>(ChessPieceType.class);
-        whitePieceDrawables.put(ChessPieceType.KING, ContextCompat.getDrawable(context, R.drawable.ic_king_white));
-        whitePieceDrawables.put(ChessPieceType.QUEEN, ContextCompat.getDrawable(context, R.drawable.ic_queen_white));
-        whitePieceDrawables.put(ChessPieceType.BISHOP, ContextCompat.getDrawable(context, R.drawable.ic_bishop_white));
-        whitePieceDrawables.put(ChessPieceType.KNIGHT, ContextCompat.getDrawable(context, R.drawable.ic_knight_white));
-        whitePieceDrawables.put(ChessPieceType.ROOK, ContextCompat.getDrawable(context, R.drawable.ic_rook_white));
-        whitePieceDrawables.put(ChessPieceType.PAWN, ContextCompat.getDrawable(context, R.drawable.ic_pawn_white));
+        addDrawable(context, whitePieceDrawables, KING, R.drawable.ic_king_white);
+        addDrawable(context, whitePieceDrawables, QUEEN, R.drawable.ic_queen_white);
+        addDrawable(context, whitePieceDrawables, BISHOP, R.drawable.ic_bishop_white);
+        addDrawable(context, whitePieceDrawables, KNIGHT, R.drawable.ic_knight_white);
+        addDrawable(context, whitePieceDrawables, ROOK, R.drawable.ic_rook_white);
+        addDrawable(context, whitePieceDrawables, PAWN, R.drawable.ic_pawn_white);
 
         blackPieceDrawables = new EnumMap<>(ChessPieceType.class);
-        blackPieceDrawables.put(ChessPieceType.KING, ContextCompat.getDrawable(context, R.drawable.ic_king_black));
-        blackPieceDrawables.put(ChessPieceType.QUEEN, ContextCompat.getDrawable(context, R.drawable.ic_queen_black));
-        blackPieceDrawables.put(ChessPieceType.BISHOP, ContextCompat.getDrawable(context, R.drawable.ic_bishop_black));
-        blackPieceDrawables.put(ChessPieceType.KNIGHT, ContextCompat.getDrawable(context, R.drawable.ic_knight_black));
-        blackPieceDrawables.put(ChessPieceType.ROOK, ContextCompat.getDrawable(context, R.drawable.ic_rook_black));
-        blackPieceDrawables.put(ChessPieceType.PAWN, ContextCompat.getDrawable(context, R.drawable.ic_pawn_black));
+        addDrawable(context, blackPieceDrawables, KING, R.drawable.ic_king_black);
+        addDrawable(context, blackPieceDrawables, QUEEN, R.drawable.ic_queen_black);
+        addDrawable(context, blackPieceDrawables, BISHOP, R.drawable.ic_bishop_black);
+        addDrawable(context, blackPieceDrawables, KNIGHT, R.drawable.ic_knight_black);
+        addDrawable(context, blackPieceDrawables, ROOK, R.drawable.ic_rook_black);
+        addDrawable(context, blackPieceDrawables, PAWN, R.drawable.ic_pawn_black);
+    }
+
+    private static void addDrawable(Context context,
+                             EnumMap<ChessPieceType, Drawable> map,
+                             ChessPieceType chessPieceType,
+                             int drawable) {
+        map.put(chessPieceType, ContextCompat.getDrawable(context, drawable));
     }
 
     @Override
@@ -77,7 +91,10 @@ public class ChessBoardView extends View {
         Optional<ChessSquare> upSquare = getSquareContainingPoint(upX, upY, chessBoard);
         if (downSquare.isPresent() && downSquare.get().getPiece().isPresent() && upSquare.isPresent()) {
             // move the piece
-            Log.d("ANITA", String.format("placing piece: %s at square %s", downSquare.get().getPiece().get().getPieceType(), upSquare.get()));
+            Log.d("ANITA",
+                  String.format("placing piece: %s at square %s",
+                                downSquare.get().getPiece().get().getPieceType(),
+                                upSquare.get()));
             chessBoard.movePiece(downSquare.get(), upSquare.get());
             invalidate();
             return true;
@@ -85,7 +102,9 @@ public class ChessBoardView extends View {
         return super.performClick();
     }
 
-    public static Optional<ChessSquare> getSquareContainingPoint(float x, float y, ChessBoard chessBoard) {
+    public static Optional<ChessSquare> getSquareContainingPoint(float x,
+                                                                 float y,
+                                                                 ChessBoard chessBoard) {
         for (ChessSquare square : chessBoard.getSquares()) {
             if (square.containsPoint(x, y)) {
 
