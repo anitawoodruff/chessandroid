@@ -11,8 +11,8 @@ public class ChessBoardFactory {
     private final int darkSquareColor;
     private final int lightSquareColor;
 
-    private static final char[] FILES = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
-    private static final int[] RANKS = {1, 2, 3, 4, 5, 6, 7, 8 };
+    private static final char[] FILES = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+    private static final int[] RANKS = {1, 2, 3, 4, 5, 6, 7, 8};
 
     public ChessBoardFactory(Context context) {
         darkSquareColor = context.getResources().getColor(R.color.dark_square);
@@ -21,6 +21,7 @@ public class ChessBoardFactory {
 
     /**
      * Creates a chess board with 8x8 squares per to fit into the given dimensions.
+     *
      * @param w width (px) available for the chess board
      * @param h height (px) available for the chess board
      */
@@ -38,7 +39,8 @@ public class ChessBoardFactory {
         return new ChessBoard(squares);
     }
 
-    private List<ChessSquare> createListOfSquaresForBoard(int squareSize, int xOffset, int yOffset) {
+    private List<ChessSquare> createListOfSquaresForBoard(
+            int squareSize, int xOffset, int yOffset) {
         List<ChessSquare> squares = new ArrayList<>(64);
         for (int i = 0; i < 64; i++) {
             int x = i % 8;
@@ -55,7 +57,9 @@ public class ChessBoardFactory {
             Rect bounds = new Rect(leftBound, topBound, rightBound, bottomBound);
             int color = (x + y) % 2 == 0 ? darkSquareColor : lightSquareColor;
             ChessPiece chessPiece = getStartingPieceAt(x, y);
-            squares.add(i, ChessSquare.create(location, color, bounds, Optional.ofNullable(chessPiece)));
+            squares.add(
+                    i,
+                    ChessSquare.create(location, color, bounds, Optional.ofNullable(chessPiece)));
         }
         return squares;
     }

@@ -57,10 +57,11 @@ public class ChessBoardView extends View {
         addDrawable(context, blackPieceDrawables, PAWN, R.drawable.ic_pawn_black);
     }
 
-    private static void addDrawable(Context context,
-                             EnumMap<ChessPieceType, Drawable> map,
-                             ChessPieceType chessPieceType,
-                             int drawable) {
+    private static void addDrawable(
+            Context context,
+            EnumMap<ChessPieceType, Drawable> map,
+            ChessPieceType chessPieceType,
+            int drawable) {
         map.put(chessPieceType, ContextCompat.getDrawable(context, drawable));
     }
 
@@ -102,9 +103,8 @@ public class ChessBoardView extends View {
         return super.performClick();
     }
 
-    public static Optional<ChessSquare> getSquareContainingPoint(float x,
-                                                                 float y,
-                                                                 ChessBoard chessBoard) {
+    public static Optional<ChessSquare> getSquareContainingPoint(
+            float x, float y, ChessBoard chessBoard) {
         for (ChessSquare square : chessBoard.getSquares()) {
             if (square.containsPoint(x, y)) {
 

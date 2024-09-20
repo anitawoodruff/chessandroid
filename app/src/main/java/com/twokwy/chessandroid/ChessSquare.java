@@ -21,7 +21,11 @@ public class ChessSquare {
         this.chessPiece = chessPiece;
     }
 
-    public static ChessSquare create(String location, @ColorInt int color, Rect bounds, Optional<ChessPiece> piece) {
+    public static ChessSquare create(
+            String location,
+            @ColorInt int color,
+            Rect bounds,
+            Optional<ChessPiece> piece) {
         ShapeDrawable drawable = new ShapeDrawable(new RectShape());
         drawable.getPaint().setColor(color);
         drawable.setBounds(bounds.left, bounds.top + 1, bounds.right - 1, bounds.bottom);
