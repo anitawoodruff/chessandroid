@@ -12,6 +12,7 @@ import android.view.View
 class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val chessBoardFactory: ChessBoardFactory
     private lateinit var chessBoard: ChessBoard
+
     private var downX = 0f
     private var downY = 0f
     private var upX = 0f
@@ -32,40 +33,28 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
     }
 
     override fun performClick(): Boolean {
-        val downSquare = chessBoard.getSquareContainingPoint(downX, downY)
-        val upSquare = chessBoard.getSquareContainingPoint(upX, upY)
-        Log.d("ChessBoardView", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
-        if (downSquare == upSquare) {
-            return true
-        }
-        if (downSquare.isPresent && downSquare.get().piece.isPresent && upSquare.isPresent) {
-            chessBoard.movePiece(downSquare.get(), upSquare.get())
+        if (chessBoard.handleDrag(downX, downY, upX, upY)) {
             invalidate()
             return true
+        } else {
+            return super.performClick()
         }
-        return super.performClick()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val action = event.action
-        return when (action) {
+        when (action) {
             MotionEvent.ACTION_DOWN -> {
                 downX = event.x
                 downY = event.y
-                true
+                return true
             }
-
             MotionEvent.ACTION_UP -> {
                 upX = event.x
                 upY = event.y
                 return performClick()
             }
-
-            else -> super.onTouchEvent(event)
+            else -> return super.onTouchEvent(event)
         }
-    }
-
-    companion object {
-        const val INSET_CHESS_PIECE_DISTANCE = 22
     }
 }
