@@ -95,8 +95,8 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
 
     private fun getDrawable(piece: ChessPiece): Drawable? {
         return if (piece.isWhite) {
-            whitePieceDrawables.getDrawable(piece.pieceType)
-        } else blackPieceDrawables.getDrawable(piece.pieceType)
+            whitePieceDrawables.getDrawable(piece)
+        } else blackPieceDrawables.getDrawable(piece)
     }
 
     companion object {

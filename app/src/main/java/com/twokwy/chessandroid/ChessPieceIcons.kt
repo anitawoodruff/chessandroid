@@ -12,8 +12,8 @@ class ChessPieceIcons() {
         icons[pieceType] = ContextCompat.getDrawable(context, drawableResId)!!
     }
 
-    fun getDrawable(pieceType: ChessPieceType): Drawable? {
-        return icons[pieceType]
+    fun getDrawable(piece: ChessPiece): Drawable? {
+        return icons[piece.pieceType]
     }
 
 }
