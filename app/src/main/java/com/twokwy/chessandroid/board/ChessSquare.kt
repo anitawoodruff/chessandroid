@@ -16,9 +16,7 @@ ChessPiece?, val drawable: ShapeDrawable) {
         return xInRange && yInRange
     }
 
-    override fun toString(): String {
-        return "ChessSquare{" + "location=" + location + ", chessPiece=" + piece + '}'
-    }
+    override fun toString() = "ChessSquare{location=$location, chessPiece=$piece}"
 
     companion object {
         fun create(
@@ -42,6 +40,6 @@ data class Location(val x: Int, val y: Int) {
     override fun toString(): String {
         val file = FILES[x]
         val rank = RANKS[7 - y]
-        return "" + file + rank
+        return "$file$rank"
     }
 }
