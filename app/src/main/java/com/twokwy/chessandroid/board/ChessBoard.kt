@@ -29,9 +29,7 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
     }
 
     fun handleDrag(downX: Float, downY: Float, upX: Float, upY: Float): Boolean {
-        // TODO: Refactor to new class 'ChessMove'? (init with 'from' & 'to' squares)
-        // Could have a method isValid(), if valid then movePiece() (could become ChessMove
-        // .execute())
+        // TODO: Refactor to ask the ChessPiece if the move is valid
         val downSquare = toSquare(downX, downY)
         val upSquare = toSquare(upX, upY)
         Log.d("ChessBoard", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
