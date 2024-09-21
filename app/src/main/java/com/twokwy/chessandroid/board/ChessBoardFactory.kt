@@ -51,7 +51,7 @@ class ChessBoardFactory(private val context: Context) {
         return squares
     }
 
-    private fun toLocation(x: Int, y: Int): Location = Location(x, y, "")
+    private fun toLocation(x: Int, y: Int): Location = Location(x, y)
 
     companion object {
         val FILES = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
