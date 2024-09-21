@@ -1,4 +1,4 @@
-package com.twokwy.chessandroid
+package com.twokwy.chessandroid.pieces
 
 enum class ChessPieceType {
     KING,

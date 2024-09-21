@@ -1,9 +1,11 @@
-package com.twokwy.chessandroid
+package com.twokwy.chessandroid.board
 
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.util.Log
+import com.twokwy.chessandroid.icons.ChessPieceIcons
+import com.twokwy.chessandroid.pieces.ChessPiece
 import java.util.Optional
 
 class ChessBoard(private val squares: List<ChessSquare>, private val icons: ChessPieceIcons) {

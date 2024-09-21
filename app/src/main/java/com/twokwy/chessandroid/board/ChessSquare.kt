@@ -1,9 +1,10 @@
-package com.twokwy.chessandroid
+package com.twokwy.chessandroid.board
 
 import android.graphics.Rect
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import androidx.annotation.ColorInt
+import com.twokwy.chessandroid.pieces.ChessPiece
 import java.util.Optional
 
 data class ChessSquare(private val location: String, val drawable: ShapeDrawable, var piece:

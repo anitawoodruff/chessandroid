@@ -1,16 +1,11 @@
-package com.twokwy.chessandroid
+package com.twokwy.chessandroid.board
 
-import android.content.Context
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.ShapeDrawable
-import androidx.test.core.app.ApplicationProvider
+import com.twokwy.chessandroid.board.ChessBoard
+import com.twokwy.chessandroid.board.ChessSquare
+import com.twokwy.chessandroid.icons.ChessPieceIcons
+import com.twokwy.chessandroid.pieces.ChessPiece
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.anyInt
-import org.mockito.Mockito.mock
-import org.mockito.junit.MockitoJUnitRunner
 
 /**
  * Example local unit test, which will execute on the development machine (host).

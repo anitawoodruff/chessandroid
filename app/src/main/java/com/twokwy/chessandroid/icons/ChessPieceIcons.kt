@@ -1,11 +1,14 @@
-package com.twokwy.chessandroid
+package com.twokwy.chessandroid.icons
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
-import com.twokwy.chessandroid.ChessPieceType.*
-import com.twokwy.chessandroid.PieceColor.BLACK
-import com.twokwy.chessandroid.PieceColor.WHITE
+import com.twokwy.chessandroid.R
+import com.twokwy.chessandroid.pieces.ChessPieceType.*
+import com.twokwy.chessandroid.pieces.PieceColor.BLACK
+import com.twokwy.chessandroid.pieces.PieceColor.WHITE
+import com.twokwy.chessandroid.pieces.ChessPiece
+import com.twokwy.chessandroid.pieces.ChessPieceType
 
 interface ChessPieceIcons {
     fun getDrawable(piece: ChessPiece): Drawable?

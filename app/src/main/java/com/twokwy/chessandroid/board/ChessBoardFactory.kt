@@ -1,7 +1,12 @@
-package com.twokwy.chessandroid
+package com.twokwy.chessandroid.board
 
 import android.content.Context
 import android.graphics.Rect
+import com.twokwy.chessandroid.R
+import com.twokwy.chessandroid.icons.ChessPieceIconsImpl
+import com.twokwy.chessandroid.pieces.ChessPiece
+import com.twokwy.chessandroid.pieces.ChessPieceType
+import com.twokwy.chessandroid.pieces.PieceColor
 import java.util.Optional
 
 class ChessBoardFactory(private val context: Context) {
