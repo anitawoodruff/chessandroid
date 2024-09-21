@@ -21,7 +21,7 @@ class ChessBoardFactory(private val context: Context) {
         val xOffset = (w - squareSize * 8) / 2
         val yOffset = (h - squareSize * 8) / 2
         val squares = createListOfSquaresForBoard(squareSize, xOffset, yOffset)
-        return ChessBoard(squares, ChessPieceIcons(context))
+        return ChessBoard(squares, ChessPieceIconsImpl(context))
     }
 
     private fun createListOfSquaresForBoard(

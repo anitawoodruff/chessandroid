@@ -7,7 +7,11 @@ import com.twokwy.chessandroid.ChessPieceType.*
 import com.twokwy.chessandroid.PieceColor.BLACK
 import com.twokwy.chessandroid.PieceColor.WHITE
 
-class ChessPieceIcons(private val context: Context) {
+interface ChessPieceIcons {
+    fun getDrawable(piece: ChessPiece): Drawable?
+}
+
+class ChessPieceIconsImpl(private val context: Context) : ChessPieceIcons {
 
     private var blackIcons = mutableMapOf<ChessPieceType, Drawable>()
     private var whiteIcons = mutableMapOf<ChessPieceType, Drawable>()
@@ -36,7 +40,7 @@ class ChessPieceIcons(private val context: Context) {
     private fun loadDrawable(drawableResId: Int) =
             ContextCompat.getDrawable(context, drawableResId)!!
 
-    fun getDrawable(piece: ChessPiece): Drawable? {
+    override fun getDrawable(piece: ChessPiece): Drawable? {
         return when (piece.color) {
             WHITE -> whiteIcons[piece.pieceType]
             BLACK -> blackIcons[piece.pieceType]
