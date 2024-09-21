@@ -5,12 +5,9 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import androidx.annotation.ColorInt
 import com.twokwy.chessandroid.pieces.ChessPiece
-import java.util.Optional
-import kotlin.jvm.optionals.getOrElse
-import kotlin.jvm.optionals.getOrNull
 
-data class ChessSquare(private val location: String, val drawable: ShapeDrawable, var piece:
-ChessPiece?) {
+data class ChessSquare(val location: Location, var piece:
+ChessPiece?, val drawable: ShapeDrawable) {
 
     fun containsPoint(x: Float, y: Float): Boolean {
         val bounds = drawable.bounds
@@ -25,14 +22,16 @@ ChessPiece?) {
 
     companion object {
         fun create(
-                location: String,
-                @ColorInt color: Int,
+                location: Location,
                 bounds: Rect,
-                piece: ChessPiece?): ChessSquare {
+                piece: ChessPiece?,
+                @ColorInt color: Int): ChessSquare {
             val drawable = ShapeDrawable(RectShape())
             drawable.paint.color = color
             drawable.setBounds(bounds.left, bounds.top + 1, bounds.right - 1, bounds.bottom)
-            return ChessSquare(location, drawable, piece)
+            return ChessSquare(location, piece, drawable)
         }
     }
 }
+
+data class Location(val location: String)

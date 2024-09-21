@@ -7,7 +7,6 @@ import com.twokwy.chessandroid.icons.ChessPieceIconsImpl
 import com.twokwy.chessandroid.pieces.ChessPiece
 import com.twokwy.chessandroid.pieces.ChessPieceType
 import com.twokwy.chessandroid.pieces.PieceColor
-import java.util.Optional
 
 class ChessBoardFactory(private val context: Context) {
     private val darkSquareColor: Int = context.resources.getColor(R.color.dark_square)
@@ -47,7 +46,7 @@ class ChessBoardFactory(private val context: Context) {
             val chessPiece = getStartingPieceAt(x, y)
             squares.add(
                     i,
-                    ChessSquare.create(location, color, bounds, chessPiece))
+                    ChessSquare.create(Location(location), bounds, chessPiece, color))
         }
         return squares
     }
