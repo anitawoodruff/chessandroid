@@ -54,8 +54,6 @@ class ChessBoardFactory(private val context: Context) {
     private fun toLocation(x: Int, y: Int): Location = Location(x, y)
 
     companion object {
-        val FILES = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
-        val RANKS = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8)
         private fun getStartingPieceAt(x: Int, y: Int): ChessPiece? {
             val pieceType = getChessPieceTypeAt(x, y) ?: return null
             return ChessPiece(pieceType, if (y < 2) PieceColor.BLACK else PieceColor.WHITE)
