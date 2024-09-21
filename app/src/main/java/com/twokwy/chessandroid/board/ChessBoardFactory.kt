@@ -47,7 +47,7 @@ class ChessBoardFactory(private val context: Context) {
             val chessPiece = getStartingPieceAt(x, y)
             squares.add(
                     i,
-                    ChessSquare.create(location, color, bounds, Optional.ofNullable<ChessPiece>(chessPiece)))
+                    ChessSquare.create(location, color, bounds, chessPiece))
         }
         return squares
     }

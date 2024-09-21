@@ -28,11 +28,11 @@ ChessPiece?) {
                 location: String,
                 @ColorInt color: Int,
                 bounds: Rect,
-                piece: Optional<ChessPiece>): ChessSquare {
+                piece: ChessPiece?): ChessSquare {
             val drawable = ShapeDrawable(RectShape())
             drawable.paint.color = color
             drawable.setBounds(bounds.left, bounds.top + 1, bounds.right - 1, bounds.bottom)
-            return ChessSquare(location, drawable, piece.getOrNull())
+            return ChessSquare(location, drawable, piece)
         }
     }
 }
