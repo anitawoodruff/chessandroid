@@ -32,11 +32,9 @@ class ChessBoardFactory(private val context: Context) {
             squareSize: Int, xOffset: Int, yOffset: Int): List<ChessSquare> {
         val squares: MutableList<ChessSquare> = ArrayList(64)
         for (i in 0..63) {
-
             val x = i % 8
             val y = i / 8
             val location = toLocation(x, y)
-
             val leftBound = xOffset + x * squareSize
             val rightBound = leftBound + squareSize
             val topBound = yOffset + y * squareSize

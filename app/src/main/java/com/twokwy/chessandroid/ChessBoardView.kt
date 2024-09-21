@@ -31,29 +31,28 @@ class ChessBoardView(context: Context, attrs: AttributeSet?) : View(context, att
         chessBoard.drawToCanvas(canvas)
     }
 
-    override fun performClick(): Boolean {
-        if (chessBoard.handleDrag(downX, downY, upX, upY)) {
-            invalidate()
-            return true
-        } else {
-            return super.performClick()
-        }
-    }
+    override fun performClick(): Boolean =
+            if (chessBoard.handleDrag(downX, downY, upX, upY)) {
+                invalidate()
+                true
+            } else {
+                super.performClick()
+            }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        val action = event.action
-        when (action) {
-            MotionEvent.ACTION_DOWN -> {
-                downX = event.x
-                downY = event.y
-                return true
+    override fun onTouchEvent(event: MotionEvent): Boolean =
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    downX = event.x
+                    downY = event.y
+                    true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    upX = event.x
+                    upY = event.y
+                    performClick()
+                }
+
+                else -> super.onTouchEvent(event)
             }
-            MotionEvent.ACTION_UP -> {
-                upX = event.x
-                upY = event.y
-                return performClick()
-            }
-            else -> return super.onTouchEvent(event)
-        }
-    }
 }
