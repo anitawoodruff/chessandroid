@@ -32,11 +32,11 @@ class ChessBoardFactory(private val context: Context) {
             squareSize: Int, xOffset: Int, yOffset: Int): List<ChessSquare> {
         val squares: MutableList<ChessSquare> = ArrayList(64)
         for (i in 0..63) {
+
             val x = i % 8
             val y = i / 8
-            val file = FILES[x]
-            val rank = RANKS[7 - y]
-            val location = "" + file + rank
+            val location = toLocation(x, y)
+
             val leftBound = xOffset + x * squareSize
             val rightBound = leftBound + squareSize
             val topBound = yOffset + y * squareSize
@@ -46,14 +46,16 @@ class ChessBoardFactory(private val context: Context) {
             val chessPiece = getStartingPieceAt(x, y)
             squares.add(
                     i,
-                    ChessSquare.create(Location(location), bounds, chessPiece, color))
+                    ChessSquare.create(location, bounds, chessPiece, color))
         }
         return squares
     }
 
+    private fun toLocation(x: Int, y: Int): Location = Location(x, y, "")
+
     companion object {
-        private val FILES = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
-        private val RANKS = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8)
+        val FILES = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
+        val RANKS = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8)
         private fun getStartingPieceAt(x: Int, y: Int): ChessPiece? {
             val pieceType = getChessPieceTypeAt(x, y) ?: return null
             return ChessPiece(pieceType, if (y < 2) PieceColor.BLACK else PieceColor.WHITE)

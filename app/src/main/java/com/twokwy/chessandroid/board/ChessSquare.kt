@@ -34,4 +34,12 @@ ChessPiece?, val drawable: ShapeDrawable) {
     }
 }
 
-data class Location(val location: String)
+data class Location(val x: Int, val y: Int, val location: String) {
+
+    override fun toString(): String {
+        val file = ChessBoardFactory.FILES[x]
+        val rank = ChessBoardFactory.RANKS[7 - y]
+        val location = "" + file + rank
+        return location
+    }
+}
