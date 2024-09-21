@@ -15,7 +15,7 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
             val squareDrawable = square.drawable
             squareDrawable.draw(canvas)
             val piece = square.piece
-            piece.ifPresent { chessPiece: ChessPiece ->
+            piece?.let { chessPiece: ChessPiece ->
                 val bounds = squareDrawable.copyBounds()
                 bounds.inset(INSET_CHESS_PIECE_DISTANCE, INSET_CHESS_PIECE_DISTANCE)
                 drawPiece(canvas, bounds, icons.getDrawable(chessPiece))
@@ -39,7 +39,7 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
             // Dragging onto or off of the board is not handled
             return false
         }
-        if (!downSquare.get().piece.isPresent) {
+        if (downSquare.get().piece == null) {
             // Dragging from an empty square is not handled
             return false
         }
@@ -49,7 +49,7 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
         }
         val pieceToBeMoved = downSquare.get().piece
         val pieceToBeTaken = upSquare.get().piece
-        if (pieceToBeTaken.isPresent && pieceToBeMoved.get().color == pieceToBeTaken.get().color) {
+        if (pieceToBeTaken != null && pieceToBeMoved?.color == pieceToBeTaken.color) {
             // Attempting to take a piece of the same color is a no-op
             return true
         }
@@ -68,7 +68,7 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
 
     private fun movePiece(from: ChessSquare, to: ChessSquare) {
         to.piece = from.piece
-        from.piece = Optional.empty()
+        from.piece = null
     }
 
     companion object {
