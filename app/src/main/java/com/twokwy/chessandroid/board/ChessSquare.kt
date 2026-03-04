@@ -35,6 +35,10 @@ data class ChessSquare(
         }
     }
 
+    fun pieceCanReach(to: ChessSquare): Boolean {
+        return piece?.isLegalMove(pos, to.pos) ?: false
+    }
+
     override fun toString() = "ChessSquare{position=$pos, chessPiece=$piece}"
 
     companion object {

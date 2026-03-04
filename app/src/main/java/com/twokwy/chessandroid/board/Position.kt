@@ -7,7 +7,7 @@ data class Position(val x: Int, val y: Int) {
 
     override fun toString(): String {
         val file = FILES[x]
-        val rank = RANKS[7 - y]
+        val rank = RANKS[y]
         return "$file$rank"
     }
 }

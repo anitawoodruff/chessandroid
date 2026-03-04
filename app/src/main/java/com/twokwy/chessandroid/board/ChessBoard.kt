@@ -15,7 +15,6 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
     }
 
     fun handleDrag(downX: Float, downY: Float, upX: Float, upY: Float): Boolean {
-        // TODO: Refactor to ask the ChessPiece if the move is valid
         val downSquare = toSquare(downX, downY)
         val upSquare = toSquare(upX, upY)
         Log.d("ChessBoard", String.format("downSquare=%s, upSquare=%s", downSquare, upSquare))
@@ -23,21 +22,30 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
             // Dragging onto or off of the board is not handled
             return false
         }
-        if (downSquare.get().piece == null) {
-            // Dragging from an empty square is not handled
-            return false
-        }
         if (downSquare == upSquare) {
             // Tapping on a square is a no-op
             return true
         }
-        val pieceToBeMoved = downSquare.get().piece
-        val pieceToBeTaken = upSquare.get().piece
+        if (downSquare.get().piece == null) {
+            // Dragging from an empty square is not handled
+            return false
+        }
+        if (isLegalMove(downSquare.get(), upSquare.get())) {
+            movePiece(downSquare.get(), upSquare.get())
+        }
+        return true
+    }
+
+    private fun isLegalMove(from: ChessSquare, to: ChessSquare): Boolean {
+        val pieceToBeMoved = from.piece
+        if (!from.pieceCanReach(to)) {
+            return false
+        }
+        val pieceToBeTaken = to.piece
         if (pieceToBeTaken != null && pieceToBeMoved?.color == pieceToBeTaken.color) {
             // Attempting to take a piece of the same color is a no-op
-            return true
+            return false
         }
-        movePiece(downSquare.get(), upSquare.get())
         return true
     }
 
