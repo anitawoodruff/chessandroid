@@ -12,20 +12,9 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
 
     fun drawToCanvas(canvas: Canvas) {
         for (square in squares) {
-            val squareDrawable = square.drawable
-            squareDrawable.draw(canvas)
-            val piece = square.piece
-            piece?.let { chessPiece: ChessPiece ->
-                val bounds = squareDrawable.copyBounds()
-                bounds.inset(INSET_CHESS_PIECE_DISTANCE, INSET_CHESS_PIECE_DISTANCE)
-                drawPiece(canvas, bounds, icons.getDrawable(chessPiece))
-            }
+            square.drawBoard(canvas)
+            square.drawPiece(canvas, icons)
         }
-    }
-
-    private fun drawPiece(canvas: Canvas, bounds: Rect, pieceDrawable: Drawable?) {
-        pieceDrawable!!.bounds = bounds
-        pieceDrawable.draw(canvas)
     }
 
     fun handleDrag(downX: Float, downY: Float, upX: Float, upY: Float): Boolean {
@@ -67,9 +56,5 @@ class ChessBoard(private val squares: List<ChessSquare>, private val icons: Ches
     private fun movePiece(from: ChessSquare, to: ChessSquare) {
         to.piece = from.piece
         from.piece = null
-    }
-
-    companion object {
-        const val INSET_CHESS_PIECE_DISTANCE = 22
     }
 }
