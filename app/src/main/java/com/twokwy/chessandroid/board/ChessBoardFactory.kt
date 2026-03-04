@@ -34,7 +34,7 @@ class ChessBoardFactory(private val context: Context) {
         for (i in 0..63) {
             val x = i % 8
             val y = i / 8
-            val location = toLocation(x, y)
+            val position = toPosition(x, y)
             val leftBound = xOffset + x * squareSize
             val rightBound = leftBound + squareSize
             val topBound = yOffset + y * squareSize
@@ -44,12 +44,12 @@ class ChessBoardFactory(private val context: Context) {
             val chessPiece = getStartingPieceAt(x, y)
             squares.add(
                     i,
-                    ChessSquare.create(location, bounds, chessPiece, color))
+                    ChessSquare.create(position, bounds, chessPiece, color))
         }
         return squares
     }
 
-    private fun toLocation(x: Int, y: Int): Location = Location(x, y)
+    private fun toPosition(x: Int, y: Int): Position = Position(x, y)
 
     companion object {
         private fun getStartingPieceAt(x: Int, y: Int): ChessPiece? {

@@ -10,25 +10,23 @@ import com.twokwy.chessandroid.icons.ChessPieceIcons
 import com.twokwy.chessandroid.pieces.ChessPiece
 
 data class ChessSquare(
-    val location: Location, var piece:
-    ChessPiece?, val drawable: ShapeDrawable
+    val pos: Position, val boardDrawable: ShapeDrawable, var piece: ChessPiece?
 ) {
 
     fun containsPoint(x: Float, y: Float): Boolean {
-        val bounds = drawable.bounds
+        val bounds = boardDrawable.bounds
         val xInRange = x > bounds.left && x < bounds.right
         val yInRange = y > bounds.top && y < bounds.bottom
         return xInRange && yInRange
     }
 
     fun drawBoard(canvas: Canvas) {
-        drawable.draw(canvas)
+        boardDrawable.draw(canvas)
     }
 
     fun drawPiece(canvas: Canvas, icons: ChessPieceIcons) {
-        val piece = piece
         piece?.let { chessPiece: ChessPiece ->
-            val bounds = drawable.copyBounds()
+            val bounds = boardDrawable.copyBounds()
             bounds.inset(
                 INSET_CHESS_PIECE_DISTANCE,
                 INSET_CHESS_PIECE_DISTANCE
@@ -37,13 +35,13 @@ data class ChessSquare(
         }
     }
 
-    override fun toString() = "ChessSquare{location=$location, chessPiece=$piece}"
+    override fun toString() = "ChessSquare{position=$pos, chessPiece=$piece}"
 
     companion object {
         const val INSET_CHESS_PIECE_DISTANCE = 22
 
         fun create(
-            location: Location,
+            position: Position,
             bounds: Rect,
             piece: ChessPiece?,
             @ColorInt color: Int
@@ -51,7 +49,7 @@ data class ChessSquare(
             val drawable = ShapeDrawable(RectShape())
             drawable.paint.color = color
             drawable.setBounds(bounds.left, bounds.top + 1, bounds.right - 1, bounds.bottom)
-            return ChessSquare(location, piece, drawable)
+            return ChessSquare(position, drawable, piece)
         }
 
         private fun drawPiece(canvas: Canvas, bounds: Rect, pieceDrawable: Drawable?) {
