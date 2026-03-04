@@ -1,5 +1,7 @@
 # chessandroid
 
+toy project to practise kotlin, android etc.
+
 ## credits
 
 Chess piece svgs:
