@@ -10,4 +10,11 @@ data class Position(val x: Int, val y: Int) {
         val rank = RANKS[y]
         return "$file$rank"
     }
+
+    companion object {
+        fun fromCoords(x: Int, y: Int) = Position(x, y)
+
+        // Screen y is inverted.
+        fun fromScreenCoords(x: Int, y: Int) = Position(x, 7 - y)
+    }
 }

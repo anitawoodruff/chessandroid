@@ -35,9 +35,11 @@ data class ChessSquare(
         }
     }
 
-    fun pieceCanReach(to: ChessSquare): Boolean {
-        return piece?.isLegalMove(pos, to.pos) ?: false
-    }
+    fun isLegalMoveIgnoringCollisions(to: ChessSquare): Boolean =
+        piece?.isLegalMove(pos, to.pos) ?: false
+
+    fun positionsToCheckMovingTo(to: ChessSquare): List<Position> =
+        piece?.positionsToCheck(pos, to.pos) ?: emptyList()
 
     override fun toString() = "ChessSquare{position=$pos, chessPiece=$piece}"
 
