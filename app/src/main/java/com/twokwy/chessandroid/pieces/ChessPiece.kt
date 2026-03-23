@@ -44,11 +44,25 @@ class ChessPiece(val pieceType: ChessPieceType, val color: PieceColor) {
         origin: Position,
         destination: Position
     ): Boolean {
-        // special cat behaviour! can make 'extended-knight'-like moves.
+        // TODO: allow pawns to take diagonally.
+        // disallow sideways movements.
         val xDiff = abs(destination.x - origin.x)
-        if (xDiff == 1) return true
-        val yDiff = abs(destination.y - origin.y)
-        return yDiff == 1
+        if (xDiff > 0) return false
+
+        val yDiff = destination.y - origin.y
+        val forwardsMovement = when (color) {
+            PieceColor.WHITE -> yDiff
+            PieceColor.BLACK -> - yDiff
+        }
+        val isFirstMove = when (color) {
+            PieceColor.WHITE -> origin.y == 1
+            PieceColor.BLACK -> origin.y == 6
+        }
+        // special behavior for first pawn move
+        if (isFirstMove && forwardsMovement == 2) {
+            return true
+        }
+        return forwardsMovement == 1
     }
 
     private fun isLegalKnightMove(
