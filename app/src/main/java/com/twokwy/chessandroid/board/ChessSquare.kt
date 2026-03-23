@@ -36,7 +36,7 @@ data class ChessSquare(
     }
 
     fun isLegalMoveIgnoringCollisions(to: ChessSquare): Boolean =
-        piece?.isLegalMove(pos, to.pos) ?: false
+        piece?.isLegalMove(pos, to.pos, to.piece) ?: false
 
     fun positionsToCheckMovingTo(to: ChessSquare): List<Position> =
         piece?.positionsToCheck(pos, to.pos) ?: emptyList()

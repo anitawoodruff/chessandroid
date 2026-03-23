@@ -23,7 +23,7 @@ class ChessPieceTest {
     }
 
     @Test
-    fun isLegalMove_pawnForwardOne_returnsTrue() {
+    fun isLegalMove_whitePawnForwardOne_returnsTrue() {
         val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.WHITE)
         val origin = Position(3, 1)
         val destination = Position(3, 2)
@@ -31,7 +31,7 @@ class ChessPieceTest {
     }
 
     @Test
-    fun isLegalMove_pawnForwardTwoRightOne_returnsFalse() {
+    fun isLegalMove_whitePawnForwardTwoRightOne_returnsFalse() {
         val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.WHITE)
         val origin = Position(3, 1)
         val destination = Position(4, 3)
@@ -62,5 +62,66 @@ class ChessPieceTest {
         assertEquals(true, piece.isLegalMove(origin, destination))
     }
 
-    // TODO test & implement pawn moves that take other pieces
+    @Test
+    fun isLegalMove_whitePawnTakingBlackPiece_returnsTrue() {
+        val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.WHITE)
+        val origin = Position(2, 2)
+        val destination = Position(3, 3)
+        val destinationPiece = ChessPiece(ChessPieceType.QUEEN, PieceColor.BLACK)
+        assertEquals(true, piece.isLegalMove(origin, destination, destinationPiece))
+    }
+
+    @Test
+    fun isLegalMove_blackPawnTakingWhitePiece_returnsTrue() {
+        val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.BLACK)
+        val origin = Position(3, 3)
+        val destination = Position(2, 2)
+        val destinationPiece = ChessPiece(ChessPieceType.QUEEN, PieceColor.WHITE)
+        assertEquals(true, piece.isLegalMove(origin, destination, destinationPiece))
+    }
+
+    @Test
+    fun isLegalMove_whitePawnTakingWhitePiece_returnsFalse() {
+        val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.WHITE)
+        val origin = Position(2, 2)
+        val destination = Position(3, 3)
+        val destinationPiece = ChessPiece(ChessPieceType.QUEEN, PieceColor.WHITE)
+        assertEquals(false, piece.isLegalMove(origin, destination, destinationPiece))
+    }
+
+    @Test
+    fun isLegalMove_whitePawnUpOneIntoBlackPiece_returnsFalse() {
+        val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.WHITE)
+        val origin = Position(2, 2)
+        val destination = Position(2, 3)
+        val destinationPiece = ChessPiece(ChessPieceType.QUEEN, PieceColor.BLACK)
+        assertEquals(false, piece.isLegalMove(origin, destination, destinationPiece))
+    }
+
+    @Test
+    fun isLegalMove_whitePawnUpOneIntoWhitePiece_returnsFalse() {
+        val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.WHITE)
+        val origin = Position(2, 2)
+        val destination = Position(2, 3)
+        val destinationPiece = ChessPiece(ChessPieceType.QUEEN, PieceColor.WHITE)
+        assertEquals(false, piece.isLegalMove(origin, destination, destinationPiece))
+    }
+
+    @Test
+    fun isLegalMove_blackPawnDownOneIntoEmptySquare_returnsTrue() {
+        val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.BLACK)
+        val origin = Position(2, 2)
+        val destination = Position(2, 1)
+        val destinationPiece = null
+        assertEquals(true, piece.isLegalMove(origin, destination, destinationPiece))
+    }
+
+    @Test
+    fun isLegalMove_blackPawnDownOneIntoWhitePiece_returnsFalse() {
+        val piece = ChessPiece(ChessPieceType.PAWN, PieceColor.BLACK)
+        val origin = Position(2, 2)
+        val destination = Position(2, 1)
+        val destinationPiece = ChessPiece(ChessPieceType.QUEEN, PieceColor.WHITE)
+        assertEquals(false, piece.isLegalMove(origin, destination, destinationPiece))
+    }
 }

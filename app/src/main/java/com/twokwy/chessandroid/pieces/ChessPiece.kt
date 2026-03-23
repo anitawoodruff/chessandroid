@@ -11,13 +11,14 @@ import kotlin.math.abs
 import kotlin.math.max
 
 class ChessPiece(val pieceType: ChessPieceType, val color: PieceColor) {
-    fun isLegalMove(origin: Position, destination: Position): Boolean = when (pieceType) {
+    fun isLegalMove(origin: Position, destination: Position, destinationPiece: ChessPiece? = null):
+            Boolean = when (pieceType) {
         KING -> isLegalKingMove(origin, destination)
         QUEEN -> isLegalQueenMove(origin, destination)
         BISHOP -> isLegalBishopMove(origin, destination)
         KNIGHT -> isLegalKnightMove(origin, destination)
         ROOK -> isLegalRookMove(origin, destination)
-        PAWN -> isLegalPawnMove(origin, destination)
+        PAWN -> isLegalPawnMove(origin, destination, destinationPiece)
     }
 
     private fun isLegalKingMove(
@@ -42,23 +43,32 @@ class ChessPiece(val pieceType: ChessPieceType, val color: PieceColor) {
 
     private fun isLegalPawnMove(
         origin: Position,
-        destination: Position
+        destination: Position,
+        destinationPiece: ChessPiece?
     ): Boolean {
-        // TODO: allow pawns to take diagonally.
-        // disallow sideways movements.
         val xDiff = abs(destination.x - origin.x)
-        if (xDiff > 0) return false
-
         val yDiff = destination.y - origin.y
         val forwardsMovement = when (color) {
             PieceColor.WHITE -> yDiff
-            PieceColor.BLACK -> - yDiff
+            PieceColor.BLACK -> -yDiff
         }
+        // allow valid diagonal taking moves.
+        if (destinationPiece != null && destinationPiece.color != color && forwardsMovement == 1 &&
+            xDiff == 1
+        ) return true
+        // disallow any other kinds of taking moves.
+        // TODO: Allow taking other pawns en-passant when valid.
+        if (destinationPiece != null) {
+            return false
+        }
+        // disallow any other kinds of sideways movements.
+        if (xDiff > 0) return false
+
+        // special behavior for first pawn move
         val isFirstMove = when (color) {
             PieceColor.WHITE -> origin.y == 1
             PieceColor.BLACK -> origin.y == 6
         }
-        // special behavior for first pawn move
         if (isFirstMove && forwardsMovement == 2) {
             return true
         }
